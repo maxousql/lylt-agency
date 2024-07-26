@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BienController extends Controller
 {
+    // Search for properties based on filters
     public function searchProperties(Request $request)
     {
         $query = BienImmo::where('disponible', 1)
@@ -25,6 +26,7 @@ class BienController extends Controller
         return view('property.listing', compact('properties', 'request', 'searchExists'));
     }
 
+    // Search properties by city
     public function searchPropertiesByCity(Request $request)
     {
         $query = BienImmo::where('disponible', 1)
@@ -33,15 +35,15 @@ class BienController extends Controller
         if ($request->filled('property-city')) {
             $query->where('ville', 'like', "%" . $request->input('property-city') . "%");
         }
+
         $this->applyFilters($query, $request);
-
         $properties = $query->paginate(6);
-
-        $searchExists = null;
+        $searchExists = $this->checkSearchExists($request);
 
         return view('property.listing', compact('properties', 'request', 'searchExists'));
     }
 
+    // Apply filters to the property query
     private function applyFilters($query, Request $request)
     {
         if ($request->filled('property-status')) {
@@ -74,13 +76,14 @@ class BienController extends Controller
         }
     }
 
+    // Check if a search query already exists
     private function checkSearchExists(Request $request)
     {
         $typeBien = TypeBien::where('intitule_type', $request->input('property-type'))->first();
 
         if (isset(Auth::user()->id_client)) {
             return Recherche::where('id_client', Auth::user()->id_client)
-                ->where('id_typeBien', $typeBien->id_typeBien)
+                ->where('id_typeBien', $typeBien->id_typeBien ?? null)
                 ->where('achat', $request->input('property-status') === 'acheter')
                 ->where('mots_cles', $request->input('property-keywords'))
                 ->where('ville', $request->input('property-city'))
@@ -92,6 +95,7 @@ class BienController extends Controller
         return false;
     }
 
+    // Retake a user's previous search
     public function retakeUserSearch($id)
     {
         $recherche = Recherche::with('getTypeBien')->findOrFail($id);
@@ -109,6 +113,7 @@ class BienController extends Controller
         return redirect()->route('search-properties', $queryParams);
     }
 
+    // Show all properties
     public function showAllProperties()
     {
         $properties = BienImmo::where('disponible', 1)
@@ -119,6 +124,7 @@ class BienController extends Controller
         return view('property.listing', compact('properties', 'searchExists'));
     }
 
+    // Register a new property
     public function registerProperty(CreateBien $request)
     {
         $bien = BienImmo::create($request->validated());
@@ -136,6 +142,7 @@ class BienController extends Controller
         return redirect()->route('sale-form');
     }
 
+    // Change the visibility of a property
     public function changeVisibilityProperty($id)
     {
         $bien = BienImmo::findOrFail($id);
@@ -148,7 +155,8 @@ class BienController extends Controller
         return response()->json(['visibilityChanged' => $returnStatus]);
     }
 
-    private function notifyUsers($bien, $status)
+    // Notify users about changes in property availability
+    private function notifyUsers(BienImmo $bien, $status)
     {
         $usersInterested = $bien->getClientsInteressés;
         $titreAlerte = $status === 'visible'
@@ -156,7 +164,7 @@ class BienController extends Controller
             : '"' . $bien->titre_annonce . '" indisponible';
         $contenuAlerte = $status === 'visible'
             ? 'Un bien que vous aviez ajouté à vos favoris est de nouveau disponible ! N\'hésitez pas à aller le consulter !'
-            : 'Ce bien que vous aviez ajouté à vos favoris n\'est plus disponible pour l\'instant. S\'il le redevient, une autre notification vous l\'informera.';
+            : 'Ce bien que vous aviez ajouté à vos favoris n\'est plus disponible pour l\'instant. S\'il le redevient, une autre notification vous en informera.';
 
         foreach ($usersInterested as $user) {
             AlerteClient::create([
@@ -167,12 +175,12 @@ class BienController extends Controller
         }
     }
 
+    // Delete a property
     public function deleteProperty($id)
     {
         $bien = BienImmo::findOrFail($id);
 
         $this->notifyUsers($bien, 'deleted');
-
         $bien->delete();
 
         return response()->json(['propertyDeleted' => true]);

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -15,6 +14,128 @@ class BienImmoSeeder extends Seeder
     public function run(): void
     {
         $biens = [
+            [
+                'typeBien_id' => 1,
+                'titre_annonce' => 'Maison familiale avec grand jardin',
+                'contenu_annonce' => 'Belle maison familiale avec un grand jardin, située dans un quartier calme. 
+                              Cette maison offre un espace de vie généreux avec une superficie de 120 m². Elle 
+                              se compose de 6 pièces principales dont 3 chambres spacieuses et lumineuses, idéales 
+                              pour une famille. La cuisine est entièrement équipée et ouverte sur le séjour, 
+                              offrant un espace convivial pour les repas en famille. Le salon dispose d\'une 
+                              cheminée, parfait pour les soirées d\'hiver. Le grand jardin de 500 m² est un 
+                              véritable atout pour cette maison. Il offre un espace de jeu sécurisé pour les 
+                              enfants et un espace détente pour les adultes. Un garage est également disponible, 
+                              pouvant accueillir deux voitures. Située à proximité des écoles, des commerces et 
+                              des transports en commun, cette maison est parfaite pour une famille recherchant 
+                              la tranquillité tout en étant proche de toutes les commodités. Ne manquez pas cette 
+                              opportunité de vivre dans un cadre de vie agréable et paisible.',
+                'prix' => 1400.00,
+                'adresse' => '23 Rue de Clichy',
+                'ville' => 'Paris',
+                'code_postal' => '75000',
+                'surface' => 120,
+                'nb_pieces' => 6,
+                'nb_chambres' => 3,
+                'nb_sdb' => 1,
+                'achat' => false,
+                'neuf' => false,
+                'garage' => true,
+                'terrain' => true,
+                'disponible' => true,
+                'images' => [
+                    'bien1-1.jpg',
+                    'bien1-2.jpg',
+                    'bien1-3.jpg',
+                    'bien1-4.jpg',
+                ]
+            ],
+            [
+                'typeBien_id' => 2,
+                'titre_annonce' => 'Appartement moderne en centre-ville',
+                'contenu_annonce' => 'Magnifique appartement de 80 m² situé en plein cœur de la ville. Ce logement moderne 
+                              dispose de 3 pièces, dont 2 chambres confortables et un salon lumineux. La cuisine 
+                              américaine est entièrement équipée avec des appareils électroménagers récents. Une 
+                              salle de bain spacieuse complète cet appartement, idéal pour les jeunes couples ou 
+                              les personnes actives. L\'emplacement est idéal, proche de toutes les commodités 
+                              (commerces, restaurants, transports en commun). Ne manquez pas cette opportunité de 
+                              vivre dans un espace moderne et fonctionnel.',
+                'prix' => 1200.00,
+                'adresse' => '45 Boulevard Saint-Michel',
+                'ville' => 'Paris',
+                'code_postal' => '75005',
+                'surface' => 80,
+                'nb_pieces' => 3,
+                'nb_chambres' => 2,
+                'nb_sdb' => 1,
+                'achat' => false,
+                'neuf' => false,
+                'garage' => false,
+                'terrain' => false,
+                'disponible' => true,
+                'images' => [
+                    'bien2-1.jpg',
+                    'bien2-2.jpg',
+                ]
+            ],
+            [
+                'typeBien_id' => 3,
+                'titre_annonce' => 'Loft spacieux avec vue imprenable',
+                'contenu_annonce' => 'Superbe loft de 150 m² offrant une vue panoramique sur la ville. Ce bien unique se 
+                              compose d\'un grand espace ouvert qui combine le salon, la salle à manger et la 
+                              cuisine. La cuisine est entièrement équipée avec des matériaux haut de gamme. Le loft 
+                              dispose de 2 chambres et de 2 salles de bain, dont une attenante à la chambre 
+                              principale. Un espace bureau est également aménagé, idéal pour le télétravail. Ce loft 
+                              est parfait pour les amateurs de grands espaces et de design contemporain.',
+                'prix' => 2500.00,
+                'adresse' => '10 Avenue de la République',
+                'ville' => 'Paris',
+                'code_postal' => '75011',
+                'surface' => 150,
+                'nb_pieces' => 4,
+                'nb_chambres' => 2,
+                'nb_sdb' => 2,
+                'achat' => false,
+                'neuf' => false,
+                'garage' => true,
+                'terrain' => false,
+                'disponible' => true,
+                'images' => [
+                    'bien3-1.jpg',
+                    'bien3-2.jpg',
+                    'bien3-3.jpg',
+                ]
+            ],
+            // ... continue with more entries ...
+            [
+                'typeBien_id' => 4,
+                'titre_annonce' => 'Villa de luxe avec piscine',
+                'contenu_annonce' => 'Luxueuse villa de 300 m² située dans un quartier résidentiel prestigieux. La villa 
+                              dispose de 8 pièces, incluant 5 chambres spacieuses et 4 salles de bain modernes. 
+                              La cuisine est équipée de matériel professionnel, idéale pour les passionnés de 
+                              cuisine. Le salon et la salle à manger sont ouverts sur un grand jardin de 2000 m², 
+                              qui comprend une piscine et un espace détente. Un garage pour trois voitures est 
+                              également disponible. Proche des écoles internationales et des commerces de luxe, 
+                              cette villa offre un cadre de vie exceptionnel.',
+                'prix' => 10000.00,
+                'adresse' => '1 Chemin des Lavandes',
+                'ville' => 'Saint-Tropez',
+                'code_postal' => '83990',
+                'surface' => 300,
+                'nb_pieces' => 8,
+                'nb_chambres' => 5,
+                'nb_sdb' => 4,
+                'achat' => true,
+                'neuf' => false,
+                'garage' => true,
+                'terrain' => true,
+                'disponible' => true,
+                'images' => [
+                    'bien4-1.jpg',
+                    'bien4-2.jpg',
+                    'bien4-3.jpg',
+                    'bien4-4.jpg',
+                ]
+            ],
             [
                 'typeBien_id' => 1,
                 'titre_annonce' => 'Maison familiale avec grand jardin',
@@ -545,7 +666,7 @@ class BienImmoSeeder extends Seeder
             foreach ($bien['images'] as $image) {
                 DB::table('Images')->insert([
                     'id_bien' => $id_bien,
-                    'image_path' => 'photos/' .$image,
+                    'image_path' => 'photos/' . $image,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);

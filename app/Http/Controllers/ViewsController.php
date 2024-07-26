@@ -8,7 +8,6 @@ use App\Models\Favori;
 use App\Models\Recherche;
 use App\Models\AlerteClient;
 use App\Models\DemandeContact;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
