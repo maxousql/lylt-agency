@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUser;
+use App\Http\Requests\UpdateUserInfo;
+use App\Http\Requests\UpdateUserPassword;
 use App\Models\DemandeContact;
 use App\Models\Utilisateur;
 use App\Models\Favori;
@@ -19,62 +22,34 @@ use Carbon\Carbon;
 
 class UtilisateurController extends Controller
 {
-    public function registerUser(Request $request)
+    public function updateUserInfo(UpdateUserInfo $request)
     {
+        $user = Utilisateur::findOrFail(Auth::user()->id_client);
 
-        $validatedData = $request->validate([
-            'firstname' => 'required|string|max:50',
-            'lastname' => 'required|string|max:50',
-            'phone' => 'required|string|max:15|regex:/^[0-9]+$/',
-            'mail2' => 'required|string|email|max:75|unique:Utilisateurs,email',
-            'password2' => ['required', 'string', 'min:8', 'confirmed', 'regex:/[0-9]/', 'regex:/[a-zA-Z]/', 'regex:/[!@#$%^&*(),.?":{}|<>]/'],
-        ]);
+        $user->update($request->validated());
 
-        $newUser = new Utilisateur();
-        $newUser->prenom = $validatedData['firstname'];
-        $newUser->nom = $validatedData['lastname'];
-        $newUser->telephone = $validatedData['phone'];
-        $newUser->email = $validatedData['mail2'];
-        $newUser->mot_de_passe = Hash::make($validatedData['password2']);
-        $newUser->role_id = 2;
+        Session::flash('success', 'Informations mise à jour avec succès !');
 
-        $newUser->save();
-
-        Session::flash('user_alert_message', 'Votre compte a été crée avec succès, vous pouvez dès à présent vous connecter !');
-
-        return redirect('/');
+        return Redirect::back();
     }
 
-    public function updateUser(Request $request)
+    public function updateUserPassword(UpdateUserPassword $request)
     {
-        $userId = Auth::user()->id_client;
+        $validatedData = $request->validated();
+        $user = Utilisateur::findOrFail(Auth::user()->id_client);
 
-        $user = Utilisateur::where('id_client', $userId)->first();
-
-        $user->prenom = $request->input('update-firstname');
-        $user->nom = $request->input('update-lastname');
-        $user->telephone = $request->input('update-phone');
-        $user->email = $request->input('update-mail');
-
-        if ($request->input('update-password') !== Auth::user()->password) {
-            $user->mot_de_passe = Hash::make($request->input('update-password'));
+        if (!Hash::check($validatedData['old-password'], $user->password)) {
+            return response()->json(['error' => 'L\'ancien mot de passe est incorrect.'], 400);
         }
 
-        $user->save();
+        if ($validatedData['new-password']) {
+            $user->password = Hash::make($validatedData['new-password']);
+            $user->save();
+        }
 
-        unset($_SESSION['user']);
-        $_SESSION['user'] = [
-            'id' => $userId,
-            'prenom' => $user->prenom,
-            'nom' => $user->nom,
-            'email' => $user->email,
-            'telephone' => $user->telephone,
-            'mot_de_passe' => $request->input('update-password'),
-            'role' => $user->getUserRole->intitule_role,
-        ];
+        Session::flash('success', 'Mot de passe modifié avec succès !');
 
-
-        return redirect()->back()->with('user_alert_message', 'Vos informations personnelles ont été mise à jour avec succès !');
+        return Redirect::back();
     }
 
     public function addFavorite(Request $request)

@@ -71,18 +71,4 @@
     </main>
 
     @include('components/footer')
-
-@section('js')
-    @if (Session::has('success'))
-        <script>
-            document.getElementById('loader').style.display = 'none';
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès',
-                text: "{{ Session::get('success') }}",
-                showConfirmButton: true
-            });
-        </script>
-    @endif
-@endsection
 @endsection

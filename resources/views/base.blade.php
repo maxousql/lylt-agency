@@ -45,7 +45,17 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    @if (Session::has('success'))
+        <script>
+            document.getElementById('loader').style.display = 'none';
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: "{{ Session::get('success') }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
     @yield('js')
 </body>
 

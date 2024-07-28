@@ -21,7 +21,6 @@ Route::middleware(['web'])->group(function () {
     Route::get('/sale-form', function () {
         return view('property.sale');
     })->name('sale-form');
-    Route::get('/user-account', [ViewsController::class, 'showUserAccount'])->name('user-account');
     Route::get('/search-properties', [BienController::class, 'searchProperties'])->name('search-properties');
     Route::get('/search-properties-city', [BienController::class, 'searchPropertiesByCity'])->name('search-properties-city');
 
@@ -35,13 +34,14 @@ Route::middleware(['web'])->group(function () {
 
     Route::middleware([CheckAuthenticated::class])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+        Route::get('/user-account', [ViewsController::class, 'showUserAccount'])->name('user-account');
     });
 
     // User actions
-    Route::post('/register-user', [UtilisateurController::class, 'registerUser'])->name('register-user');
     Route::post('/register-property', [BienController::class, 'registerProperty'])->name('register-property');
     Route::post('/send-contact-request', [UtilisateurController::class, 'sendContactRequest'])->name('send-contact-request');
-    Route::post('/update-user', [UtilisateurController::class, 'updateUser'])->name('update-user');
+    Route::post('/update-user-info', [UtilisateurController::class, 'updateUserInfo'])->name('update-user-info');
+    Route::post('/update-user-password', [UtilisateurController::class, 'updateUserPassword'])->name('update-user-password');
     Route::post('/send-notification-client', [UtilisateurController::class, 'sendNotificationClient'])->name('send-notification-client');
     Route::post('/add-favorite', [UtilisateurController::class, 'addFavorite'])->name('add-favorite');
     Route::post('/remove-favorite', [UtilisateurController::class, 'removeFavorite'])->name('remove-favorite');

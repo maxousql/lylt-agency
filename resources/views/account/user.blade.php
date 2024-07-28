@@ -38,41 +38,53 @@
                 <div class="col-md-9">
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="account-general">
-                            <hr class="border-light m-0">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Nom</label>
-                                    <input type="text" class="form-control mb-1" value="{{ Auth::user()->nom }}">
+                            <form action="{{ route('update-user-info') }}" method="POST">
+                                @csrf
+                                <hr class="border-light m-0">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="form-label">Nom</label>
+                                        <input name="nom" type="text" class="form-control mb-1"
+                                            value="{{ Auth::user()->nom }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Prénom</label>
+                                        <input name="prenom" type="text" class="form-control"
+                                            value="{{ Auth::user()->prenom }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Téléphone</label>
+                                        <input name="telephone" type="text" class="form-control mb-1"
+                                            value="{{ Auth::user()->telephone }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Adresse email</label>
+                                        <input name="email" type="text" class="form-control"
+                                            value="{{ Auth::user()->email }}">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Prénom</label>
-                                    <input type="text" class="form-control" value="{{ Auth::user()->prenom }}">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Téléphone</label>
-                                    <input type="text" class="form-control mb-1" value="{{ Auth::user()->telephone }}">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Adresse email</label>
-                                    <input type="text" class="form-control" value="{{ Auth::user()->email }}">
-                                </div>
-                            </div>
+                                <button type="submit" class="btn btn-primary mb-3">Sauvegarder</button>
+                            </form>
                         </div>
                         <div class="tab-pane fade" id="account-change-password">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">Ancien mot de passe</label>
-                                    <input type="password" class="form-control">
+                            <form action="{{ route('update-user-password') }}" method="POST">
+                                @csrf
+                                <div class="card-body pb-2">
+                                    <div class="form-group">
+                                        <label class="form-label">Ancien mot de passe</label>
+                                        <input name="old-password" type="password" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Nouveau mot de passe</label>
+                                        <input name="new-password" type="password" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Confirmer nouveau mot de passe</label>
+                                        <input name="new-password_confirmation" type="password" class="form-control">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Nouveau mot de passe</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Confirmer nouveau mot de passe</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                            </div>
+                                <button type="submit" class="btn btn-primary mb-3">Sauvegarder</button>
+                            </form>
                         </div>
                         <div class="tab-pane fade" id="account-info">
                             <div class="card-body pb-2">
